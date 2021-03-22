@@ -7,8 +7,18 @@ use Illuminate\Http\Request;
 
 class MeController extends Controller
 {
-    public function __invoke()
+    public function __construct()
     {
-        dd('hello');
+        $this->middleware(['auth:api']);
+    }
+
+    public function __invoke(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'email' => $user->email,
+            'name' => $user->name
+        ]);
     }
 }
